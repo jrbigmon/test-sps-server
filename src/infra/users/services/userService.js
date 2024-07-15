@@ -1,3 +1,4 @@
+const InvalidField = require("../../../domain/errors/InvalidField");
 const UserCreate = require("../../../domain/users/factory/UserCreate");
 const UserModel = require("../models/UserModel");
 const { list } = require("../models/UserModel");
@@ -85,6 +86,12 @@ const UserService = {
   create(req, res) {
     try {
       const { name, email, type, password } = req.body || {};
+
+      const users = UserModel.list();
+
+      if (users.find((user) => user.email === email)) {
+        throw new InvalidField("Email already exists", "email");
+      }
 
       const userCreated = UserCreate({ name, email, type, password });
 
