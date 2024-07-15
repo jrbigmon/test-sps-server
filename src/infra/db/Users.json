@@ -11,5 +11,12 @@
         "email": "vagner.junior@mail.com",
         "type": "Admin",
         "password": "123"
+    },
+    {
+        "id": "de76b780-22a1-4e11-b6f4-167c28110310",
+        "name": "testando",
+        "email": "vagner.junior1@mail.com",
+        "type": "admin",
+        "password": "123"
     }
 ]
