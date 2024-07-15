@@ -1,8 +1,52 @@
 const UserCreate = require("../../../domain/users/factory/UserCreate");
 const UserModel = require("../models/UserModel");
 const { list } = require("../models/UserModel");
+const jwt = require("jsonwebtoken");
 
 const UserService = {
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+
+      const users = UserModel.list();
+
+      const user = users.find((userInDb) => email === userInDb.email);
+
+      if (!user) {
+        return res.status(403).json({
+          error: "User unauthorized",
+          statusCode: 403,
+        });
+      }
+
+      if (user.password !== password) {
+        return res.status(403).json({
+          error: "User unauthorized",
+          statusCode: 403,
+        });
+      }
+
+      const token = jwt.sign(
+        {
+          id: user.id,
+          email: user.email,
+        },
+        "shiu",
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      return res
+        .status(201)
+        .json({ message: "Autentication successfully", token });
+    } catch (error) {
+      return res.status(500).json({
+        error: error.message,
+        statusCode: error.statusCode,
+      });
+    }
+  },
   findById(req, res) {
     try {
       const { id } = req.params || {};
