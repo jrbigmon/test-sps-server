@@ -42,9 +42,9 @@ const UserService = {
         .status(201)
         .json({ message: "Autentication successfully", token });
     } catch (error) {
-      return res.status(500).json({
+      return res.status(error.statusCode || 500).json({
         error: error.message,
-        statusCode: error.statusCode,
+        statusCode: error.statusCode || 500,
       });
     }
   },
@@ -60,7 +60,7 @@ const UserService = {
         statusCode: 200,
       });
     } catch (error) {
-      return res.status(error.statusCode | 500).json({
+      return res.status(error.statusCode || 500).json({
         error: error.message,
         statusCode: error.statusCode || 500,
       });
@@ -153,7 +153,7 @@ const UserService = {
         statusCode: 200,
       });
     } catch (error) {
-      return res.status(error.statusCode | 500).json({
+      return res.status(error.statusCode | !500).json({
         error: error.message,
         statusCode: error.statusCode || 500,
       });
