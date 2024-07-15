@@ -6,8 +6,14 @@ const UserService = {
   findById(req, res) {
     try {
       const { id } = req.params || {};
+      console.log(id);
+      const user = UserModel.findById(id);
 
-      return UserModel.findById(id);
+      return res.status(200).json({
+        success: true,
+        result: user,
+        statusCode: 200,
+      });
     } catch (error) {
       return res.status(error.statusCode | 500).json({
         error: error.message,
@@ -19,9 +25,16 @@ const UserService = {
   findAll(_, res) {
     try {
       const users = list();
-      return res.send(users);
+      return res.status(200).json({
+        result: users,
+        success: true,
+        statusCode: 200,
+      });
     } catch (error) {
-      return res.status(500).json(error.message);
+      return res.status(error.statusCode || 500).json({
+        error: error.message,
+        statusCode: error.statusCode || 500,
+      });
     }
   },
 
@@ -35,31 +48,61 @@ const UserService = {
 
       UserModel.create(userCreated);
 
-      return res.status(201).json(userCreated);
+      return res.status(201).json({
+        result: userCreated,
+        success: true,
+        statusCode: 201,
+      });
     } catch (error) {
-      return res.status(error.statusCode).json({
+      return res.status(error.statusCode || 500).json({
         error: error.message,
-        statusCode: error.statusCode,
+        statusCode: error.statusCode || 500,
       });
     }
   },
 
   update(req, res) {
     try {
-      const { id, name, email, type, password } = req.body || {};
+      const { id } = req.params || {};
+      const { name, email, type, password } = req.body || {};
 
       const user = UserModel.findById(id);
 
-      if (name) userInDatabase.name = name;
-      if (email) userInDatabase.email = email;
-      if (type) userInDatabase.type = type;
-      if (password) userInDatabase.password = passworde;
+      if (name) user.name = name;
+      if (email) user.email = email;
+      if (type) user.type = type;
+      if (password) user.password = password;
 
       user.isValid();
 
-      UserModel.update(user.id, user);
+      UserModel.update(id, user);
+
+      return res.status(200).json({
+        result: true,
+        success: true,
+        statusCode: 200,
+      });
     } catch (error) {
       return res.status(error.statusCode || 500).json({
+        error: error.message,
+        statusCode: error.statusCode || 500,
+      });
+    }
+  },
+
+  delete(req, res) {
+    try {
+      const { id } = req.params || {};
+
+      UserModel.delete(id);
+
+      return res.status(200).json({
+        result: true,
+        success: true,
+        statusCode: 200,
+      });
+    } catch (error) {
+      return res.status(error.statusCode | 500).json({
         error: error.message,
         statusCode: error.statusCode || 500,
       });

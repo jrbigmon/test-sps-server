@@ -1,10 +1,10 @@
 const path = require("path");
-const User = require("../../../domain/users/factory/UserCreate");
+const User = require("../../../domain/users/entity/User");
 const InvalidField = require("../../../domain/errors/InvalidField");
 const NotFound = require("../../../domain/errors/NotFound");
+const usersDatabase = path.resolve("src", "infra", "db", "Users.json");
 const readFile = require("../../../utils/readFile");
 const writeFile = require("../../../utils/writeFile");
-const usersDatabase = path.resolve("src", "infra", "db", "Users.json");
 
 const UserModel = () => {
   const userNotFound = () => {
@@ -41,7 +41,7 @@ const UserModel = () => {
 
       users.push(user);
 
-      writeFile(path, users);
+      writeFile(usersDatabase, users);
 
       return user;
     },
@@ -55,9 +55,12 @@ const UserModel = () => {
       if (userIndex === -1) userNotFound();
 
       users[userIndex] = {
+        id,
         ...users[userIndex],
         ...value,
       };
+
+      console.log(users[userIndex]);
 
       writeFile(usersDatabase, users);
 

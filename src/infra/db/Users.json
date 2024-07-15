@@ -1,8 +1,15 @@
 [
-  {
-    "name": "admin",
-    "email": "admin@spsgroup.com.br",
-    "type": "admin",
-    "password": "1234"
-  }
+    {
+        "name": "admin",
+        "email": "admin@spsgroup.com.br",
+        "type": "admin",
+        "password": "1234"
+    },
+    {
+        "id": "766c5012-2c5a-4e2f-850a-7b27f977c3a6",
+        "name": "Siqueira",
+        "email": "vagner.junior@mail.com",
+        "type": "Admin",
+        "password": "123"
+    }
 ]
